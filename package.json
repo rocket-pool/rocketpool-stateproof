@@ -1,0 +1,21 @@
+{
+  "name": "rocketpool-stateproof",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "run": "bun ./src/index.ts",
+    "build": "bun build ./src/index.ts --compile --outfile rp-stateproof"
+  },
+  "dependencies": {
+    "@chainsafe/persistent-merkle-tree": "^1.2.0",
+    "@chainsafe/ssz": "^1.2.1",
+    "@lodestar/api": "^1.31.0",
+    "@lodestar/types": "^1.31.0",
+    "@types/node": "^22.15.29",
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0",
+    "dotenv": "^16.5.0"
+  },
+  "private": true
+}
