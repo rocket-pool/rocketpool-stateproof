@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv'
 import { generateWithdrawableEpochProof } from './commands/withdrawable_epoch'
 import { generateWithdrawalProof } from './commands/withdrawal'
 import { generateValidatorPubkeyProof } from './commands/validator_pubkey'
+import { generateHistoricalWithdrawalProof } from './commands/historical_withdrawal'
 
 dotenv.config()
 
@@ -51,5 +52,12 @@ program.command('withdrawal').
   argument('<withdrawal_slot>', 'Slot that contains the withdrawal (must be within 8192 slots of the proof slot)').
   argument('<withdrawal_number>', 'Index into the withdrawal list for the withdrawal').
   action(generateWithdrawalProof)
+
+program.command('historical_withdrawal').
+  description('generate a state proof for a withdrawal (using historical block root)').
+  argument('<proof_slot>', 'Slot to produce the proof for').
+  argument('<withdrawal_slot>', 'Slot that contains the withdrawal (must be within 8192 slots of the proof slot)').
+  argument('<withdrawal_number>', 'Index into the withdrawal list for the withdrawal').
+  action(generateHistoricalWithdrawalProof)
 
 program.parse()
