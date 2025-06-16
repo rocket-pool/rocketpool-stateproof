@@ -30,34 +30,34 @@ program.name('rp-stateproof')
 
 program.command('validator_pubkey').
   description('generate a state proof for a validator pubkey/withdrawal_credentials').
-  argument('<validator_index>', 'Validator index to generate proof for').
-  option('--slot <number>', 'Slot number to generate proof for ', 'head').
+  argument('<validator_index>', 'validator index to generate proof for').
+  option('--slot <number>', 'slot number to generate proof for ', 'head').
   action(generateValidatorPubkeyProof)
 
 program.command('validator').
   description('generate a state proof for a validator').
-  argument('<validator_index>', 'Validator index to generate proof for').
-  option('--slot <number>', 'Slot number to generate proof for ', 'head').
+  argument('<validator_index>', 'validator index to generate proof for').
+  option('--slot <number>', 'slot number to generate proof for ', 'head').
   action(generateValidatorProof)
 
 program.command('withdrawable_epoch').
   description('generate a state proof for the withdrawable_epoch of a validator').
-  argument('<validator_index>', 'Validator index to generate proof for').
-  option('--slot <number>', 'Slot number to generate proof for ', 'head').
+  argument('<validator_index>', 'validator index to generate proof for').
+  option('--slot <number>', 'slot number to generate proof for ', 'head').
   action(generateWithdrawableEpochProof)
 
 program.command('withdrawal').
   description('generate a state proof for a withdrawal').
-  argument('<proof_slot>', 'Slot to produce the proof for').
-  argument('<withdrawal_slot>', 'Slot that contains the withdrawal (must be within 8192 slots of the proof slot)').
-  argument('<withdrawal_number>', 'Index into the withdrawal list for the withdrawal').
+  argument('<proof_slot>', 'slot to produce the proof for').
+  argument('<withdrawal_slot>', 'slot that contains the withdrawal (must be within 8191 slots of the proof slot)').
+  argument('<withdrawal_number>', 'index into the withdrawal list for the withdrawal').
   action(generateWithdrawalProof)
 
 program.command('historical_withdrawal').
   description('generate a state proof for a withdrawal (using historical block root)').
-  argument('<proof_slot>', 'Slot to produce the proof for').
-  argument('<withdrawal_slot>', 'Slot that contains the withdrawal (must be within 8192 slots of the proof slot)').
-  argument('<withdrawal_number>', 'Index into the withdrawal list for the withdrawal').
+  argument('<proof_slot>', 'slot to produce the proof for').
+  argument('<withdrawal_slot>', 'slot that contains the withdrawal').
+  argument('<withdrawal_number>', 'index into the withdrawal list for the withdrawal').
   action(generateHistoricalWithdrawalProof)
 
 program.parse()
