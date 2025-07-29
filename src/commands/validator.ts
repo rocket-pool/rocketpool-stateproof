@@ -118,7 +118,7 @@ export async function generateValidatorProof(validatorIndexStr: string, opts: Va
       exitEpoch: Number(validator.exitEpoch),
       withdrawableEpoch: Number(validator.withdrawableEpoch),
     },
-    witnesses: witnesses,
+    witnesses: witnesses.map(witness => `0x${witness}`)
   }
 
   console.log(JSON.stringify(output, null, 2))

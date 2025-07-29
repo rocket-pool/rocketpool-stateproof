@@ -181,7 +181,7 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
       withdrawalCredentials: `0x${Buffer.from(withdrawal.address).toString('hex')}`,
       amountInGwei: Number(withdrawal.amount),
     },
-    witnesses: witnesses,
+    witnesses: witnesses.map(witness => `0x${witness}`)
   }
 
   console.log(JSON.stringify(output, null, 2))
