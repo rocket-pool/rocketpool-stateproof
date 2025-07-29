@@ -58,6 +58,7 @@ program.command('historical_withdrawal').
   argument('<proof_slot>', 'slot to produce the proof for').
   argument('<withdrawal_slot>', 'slot that contains the withdrawal').
   argument('<withdrawal_number>', 'index into the withdrawal list for the withdrawal').
+  option('--network <string>', '"mainnet" or "hoodi" (defaults to "mainnet")', 'mainnet').
   action(generateHistoricalWithdrawalProof)
 
 program.parse()

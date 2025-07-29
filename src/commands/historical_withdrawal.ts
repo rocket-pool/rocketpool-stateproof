@@ -7,18 +7,27 @@ import { concatGindices } from '@chainsafe/persistent-merkle-tree'
 
 interface ValidatorProofOpts {
   slot: string
+  network: string
 }
 
 const SLOTS_PER_HISTORICAL_ROOT = 8192;
+const MAINNET_HISTORY_START = 758; // CAPELLA_FORK_EPOCH * 32 / SLOTS_PER_HISTORICAL_ROOT
+const HOODI_HISTORY_START = 0;
 
 export async function generateHistoricalWithdrawalProof(proofSlotStr: string, withdrawalSlotStr: string, withdrawalNumberStr: string, opts: ValidatorProofOpts, program: Command) {
   const allOpts = program.optsWithGlobals();
   const proofSlot = parseInt(proofSlotStr)
   const withdrawalSlot = parseInt(withdrawalSlotStr)
   const withdrawalNumber = parseInt(withdrawalNumberStr)
+  const network = opts.network
+
+  if (network !== 'mainnet' && network !== 'hoodi') {
+    console.error(`Unknown network "${network}"`)
+    process.exit(1)
+  }
 
   const slotIndex = withdrawalSlot % SLOTS_PER_HISTORICAL_ROOT;
-  const historyStart = 758; // CAPELLA_FORK_EPOCH * 32 / SLOTS_PER_HISTORICAL_ROOT
+  const historyStart = network === 'mainnet' ? MAINNET_HISTORY_START : HOODI_HISTORY_START;
   const historicalEntry = Math.floor(withdrawalSlot / SLOTS_PER_HISTORICAL_ROOT) - historyStart
 
   // Fetch the block at the withdrawal slot
@@ -30,10 +39,10 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
 
   // Fetch the beacon state at the proof slot
   const state = await getState(allOpts.rpc, proofSlot)
-  console.log(`Generating proof for slot ${state.slot}`)
+  console.log(`Generating proof for slot ${state.slot} on ${network}`)
 
   // Construct the SSZ tree
-  const stateView = ssz.electra.BeaconState.toView(state);
+  const stateView = ssz.fulu.BeaconState.toView(state);
 
   // Compute the state root for this slot
   console.log(chalk.blue("Computing state root..."))
@@ -42,7 +51,7 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
 
   // Construct the block header as it would be in the "parent_root" of the next block from the latest block header and the computed state root
   const blockHeader = constructBlockHeaderWithStateRoot(state.latestBlockHeader, stateRoot);
-  const blockHeaderView = ssz.electra.BeaconBlockHeader.toView(blockHeader);
+  const blockHeaderView = ssz.fulu.BeaconBlockHeader.toView(blockHeader);
 
   // Compute the block root
   console.log(chalk.blue("Computing block root..."))
@@ -55,7 +64,7 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
 
   // Generate partial proof from BlockHeader -> state_root
   {
-    const { gindex } = ssz.electra.BeaconBlockHeader.getPathInfo(['state_root']);
+    const { gindex } = ssz.fulu.BeaconBlockHeader.getPathInfo(['state_root']);
     gindices.push(gindex);
     const proof = createProof(blockHeaderView.node, {
       type: ProofType.single,
@@ -66,7 +75,7 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
 
   // Generate partial proof from BeaconState -> historical_summaries[historicalEntry]
   {
-    const { gindex } = ssz.electra.BeaconState.getPathInfo(['historical_summaries', historicalEntry]);
+    const { gindex } = ssz.fulu.BeaconState.getPathInfo(['historical_summaries', historicalEntry]);
     gindices.push(gindex);
     const proof = createProof(stateView.node, {
       type: ProofType.single,
@@ -77,9 +86,9 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
 
   // Generate partial proof from HistoricalSummary -> block_summary_root
   {
-    const historicalSummaryView = ssz.electra.HistoricalSummary.toView(historicalState.historicalSummaries[historicalEntry]);
+    const historicalSummaryView = ssz.fulu.HistoricalSummary.toView(state.historicalSummaries[historicalEntry]);
 
-    const { gindex } = ssz.electra.HistoricalSummary.getPathInfo(['block_summary_root']);
+    const { gindex } = ssz.fulu.HistoricalSummary.getPathInfo(['block_summary_root']);
     gindices.push(gindex);
     const proof = createProof(historicalSummaryView.node, {
       type: ProofType.single,
@@ -90,13 +99,13 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
 
   // Generate partial proof for block_roots -> block_roots[n]
   {
-    const blockRootsView = ssz.electra.HistoricalBlockRoots.toView(historicalState.blockRoots);
+    const blockRootsView = ssz.fulu.HistoricalBlockRoots.toView(historicalState.blockRoots);
 
     // Calculate the block root
     const blockRootsRoot = Buffer.from(blockRootsView.hashTreeRoot()).toString('hex');
     console.log(`Computed block roots root: ${blockRootsRoot}`);
 
-    const { gindex } = ssz.electra.HistoricalBlockRoots.getPathInfo([slotIndex]);
+    const { gindex } = ssz.fulu.HistoricalBlockRoots.getPathInfo([slotIndex]);
     gindices.push(gindex);
     const proof = createProof(blockRootsView.node, {
       type: ProofType.single,
@@ -111,7 +120,7 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
 
   // Generate partial proof from BeaconBlock -> body -> execution_payload -> withdrawals[withdrawalNumber]
   {
-    const blockHeaderView = ssz.electra.BeaconBlock.toView(withdrawalBlock.message)
+    const blockHeaderView = ssz.fulu.BeaconBlock.toView(withdrawalBlock.message)
 
     // Compute the block root to compare with block root from proof slot
     const computedBlockRoot = Buffer.from(blockHeaderView.hashTreeRoot()).toString('hex');
@@ -121,7 +130,7 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
       console.error(`${computedBlockRoot} != ${Buffer.from(blockRootFromProofSlot).toString('hex')}`)
     }
 
-    const { gindex } = ssz.electra.BeaconBlock.getPathInfo(['body', 'execution_payload', 'withdrawals', withdrawalNumber]);
+    const { gindex } = ssz.fulu.BeaconBlock.getPathInfo(['body', 'execution_payload', 'withdrawals', withdrawalNumber]);
     gindices.push(gindex);
     const proof = createProof(blockHeaderView.node, {
       type: ProofType.single,
@@ -159,4 +168,21 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
   console.log(`Validator Index: ${withdrawal.validatorIndex}`)
   console.log(`Address: 0x${Buffer.from(withdrawal.address).toString('hex')}`)
   console.log(`Amount (gwei): ${withdrawal.amount.toString(10)}`)
+  console.log();
+
+  // Output JSON encoded result
+  const output = {
+    slot: proofSlot,
+    withdrawalSlot: withdrawalSlot,
+    withdrawalNum: withdrawalNumber,
+    withdrawal: {
+      index: withdrawal.index,
+      validatorIndex: withdrawal.validatorIndex,
+      withdrawalCredentials: `0x${Buffer.from(withdrawal.address).toString('hex')}`,
+      amountInGwei: Number(withdrawal.amount),
+    },
+    witnesses: witnesses,
+  }
+
+  console.log(JSON.stringify(output, null, 2))
 }

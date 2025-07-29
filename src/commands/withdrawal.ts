@@ -118,4 +118,21 @@ export async function generateWithdrawalProof(proofSlotStr: string, withdrawalSl
   console.log(`Validator Index: ${withdrawal.validatorIndex}`)
   console.log(`Address: 0x${Buffer.from(withdrawal.address).toString('hex')}`)
   console.log(`Amount (gwei): ${withdrawal.amount.toString(10)}`)
+  console.log()
+
+  // Output JSON encoded result
+  const output = {
+    slot: proofSlot,
+    withdrawalSlot: withdrawalSlot,
+    withdrawalNum: withdrawalNumber,
+    withdrawal: {
+      index: withdrawal.index,
+      validatorIndex: withdrawal.validatorIndex,
+      withdrawalCredentials: `0x${Buffer.from(withdrawal.address).toString('hex')}`,
+      amountInGwei: Number(withdrawal.amount),
+    },
+    witnesses: witnesses,
+  }
+
+  console.log(JSON.stringify(output, null, 2))
 }

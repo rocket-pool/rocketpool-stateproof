@@ -102,4 +102,24 @@ export async function generateValidatorProof(validatorIndexStr: string, opts: Va
   console.log(`Activation Epoch: ${validator.activationEpoch}`)
   console.log(`Exit Epoch: ${validator.exitEpoch}`)
   console.log(`Withdrawable Epoch: ${validator.withdrawableEpoch}`)
+  console.log()
+
+  // Output JSON encoded result
+  const output = {
+    slot: slot,
+    validatorIndex: validatorIndex,
+    validator: {
+      pubkey: `0x${Buffer.from(validator.pubkey)}`,
+      withdrawalCredentials: `0x${Buffer.from(validator.withdrawalCredentials).toString('hex')}`,
+      effectiveBalance: Number(validator.effectiveBalance),
+      slashed: validator.slashed,
+      activationEligibilityEpoch: Number(validator.activationEligibilityEpoch),
+      activationEpoch: Number(validator.activationEpoch),
+      exitEpoch: Number(validator.exitEpoch),
+      withdrawableEpoch: Number(validator.withdrawableEpoch),
+    },
+    witnesses: witnesses,
+  }
+
+  console.log(JSON.stringify(output, null, 2))
 }
