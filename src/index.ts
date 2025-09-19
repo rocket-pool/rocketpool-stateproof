@@ -1,6 +1,7 @@
 import { Command } from 'commander'
-import { generateValidatorProof } from './commands/validator'
 import * as dotenv from 'dotenv'
+import { generateValidatorProof } from './commands/validator'
+import { generateSlotProof } from './commands/slot'
 import { generateWithdrawableEpochProof } from './commands/withdrawable_epoch'
 import { generateWithdrawalProof } from './commands/withdrawal'
 import { generateValidatorPubkeyProof } from './commands/validator_pubkey'
@@ -39,6 +40,11 @@ program.command('validator').
   argument('<validator_index>', 'validator index to generate proof for').
   option('--slot <number>', 'slot number to generate proof for ', 'head').
   action(generateValidatorProof)
+
+program.command('slot').
+  description('generate a state proof for the slot number').
+  option('--slot <number>', 'slot number to generate proof for ', 'head').
+  action(generateSlotProof)
 
 program.command('withdrawable_epoch').
   description('generate a state proof for the withdrawable_epoch of a validator').
