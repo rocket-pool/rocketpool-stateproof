@@ -5,16 +5,15 @@
       "name": "rocketpool-stateproof",
       "dependencies": {
         "@chainsafe/persistent-merkle-tree": "^1.2.0",
-        "@chainsafe/ssz": "^1.2.1",
-        "@lodestar/api": "^1.31.0",
-        "@lodestar/types": "^1.31.0",
+        "@chainsafe/ssz": "^1.4.0",
+        "@lodestar/api": "^1.44.0",
+        "@lodestar/config": "^1.44.0",
+        "@lodestar/params": "^1.44.0",
+        "@lodestar/types": "^1.44.0",
         "@types/node": "^22.15.29",
         "chalk": "^5.4.1",
         "commander": "^14.0.0",
         "dotenv": "^16.5.0",
-      },
-      "devDependencies": {
-        "typescript": "^5.5.3",
       },
     },
   },
@@ -27,21 +26,27 @@
 
     "@chainsafe/hashtree-linux-arm64-gnu": ["@chainsafe/hashtree-linux-arm64-gnu@1.0.1", "", { "os": "linux", "cpu": "arm64" }, "sha512-p1hnhGq2aFY+Zhdn1Q6L/6yLYNKjqXfn/Pc8jiM0e3+Lf/hB+yCdqYVu1pto26BrZjugCFZfupHaL4DjUTDttw=="],
 
+    "@chainsafe/hashtree-linux-arm64-musl": ["@chainsafe/hashtree-linux-arm64-musl@1.0.2", "", { "os": "linux", "cpu": "arm64" }, "sha512-BUy+/9brJwAFAtraro4y/1F+aP/8j/7HrnYdde8PTu7jHWAClI9xZygadaJbk0GoWxyCOUAJKUs8KHVnYxJDeg=="],
+
     "@chainsafe/hashtree-linux-x64-gnu": ["@chainsafe/hashtree-linux-x64-gnu@1.0.1", "", { "os": "linux", "cpu": "x64" }, "sha512-uCIGuUWuWV0LiB4KLMy6JFa7Jp6NmPl3hKF5BYWu8TzUBe7vSXMZfqTzGxXPggFYN2/0KymfRdG9iDCOJfGRqg=="],
+
+    "@chainsafe/hashtree-linux-x64-musl": ["@chainsafe/hashtree-linux-x64-musl@1.0.2", "", { "os": "linux", "cpu": "x64" }, "sha512-mbJB3C0RjwpqOMPZIUQm3IBH6d3sYiKDXMU6ORt5nuk7Ix2I80xxffAciDO1d7kKNnW6HStOj5s/rGhIDxK1ug=="],
+
+    "@chainsafe/hashtree-win32-x64-msvc": ["@chainsafe/hashtree-win32-x64-msvc@1.0.2", "", { "os": "win32", "cpu": "x64" }, "sha512-wXFhGqaydgadefQbjSTGqZY1R1MBhnJj+gbJhULNRUXco5pHsXfOk3QhCDAefp1PPW+wQwfT4clEnQCqJIf58w=="],
 
     "@chainsafe/persistent-merkle-tree": ["@chainsafe/persistent-merkle-tree@1.2.0", "", { "dependencies": { "@chainsafe/as-sha256": "1.2.0", "@chainsafe/hashtree": "1.0.1", "@noble/hashes": "^1.3.0" } }, "sha512-Ng2eqd6OPvFPPuroQ659ZrFMHtc44LxUfK7K2WkoBhlQ3hrvIn3UTQNKc77xUCU40xjeBGSxAfz+MSV256i+/g=="],
 
-    "@chainsafe/ssz": ["@chainsafe/ssz@1.2.1", "", { "dependencies": { "@chainsafe/as-sha256": "1.2.0", "@chainsafe/persistent-merkle-tree": "1.2.0" } }, "sha512-rchrNF+tJ1yOMZS5CQK3bK5UZC1vQP8ANxW4McRedvBls5b9Mvn+LtbOE4wffrVMOxQzOXcBGZDoCPPJYX76Rg=="],
+    "@chainsafe/ssz": ["@chainsafe/ssz@1.6.2", "", { "dependencies": { "@chainsafe/as-sha256": "", "@chainsafe/persistent-merkle-tree": "" } }, "sha512-XJELFJBHBstcvyRuXWPmNc/WRWmV5FVV03+iPTpgtCPQaImEHjKU4bc/5me35dRrXpehC04LD4ePYayOUjxFbw=="],
 
-    "@lodestar/api": ["@lodestar/api@1.31.0", "", { "dependencies": { "@chainsafe/persistent-merkle-tree": "^1.2.0", "@chainsafe/ssz": "^1.2.1", "@lodestar/config": "^1.31.0", "@lodestar/params": "^1.31.0", "@lodestar/types": "^1.31.0", "@lodestar/utils": "^1.31.0", "eventsource": "^2.0.2", "qs": "^6.11.1" } }, "sha512-fH8ivkE9G/Kx0/zudxNJM/uT35D8a9M2AZljJD7Mu6gE2p6JKS8dHLDDmZO5csPCwm+VMN35n9+gOComTNRp5Q=="],
+    "@lodestar/api": ["@lodestar/api@1.44.0", "", { "dependencies": { "@chainsafe/persistent-merkle-tree": "^1.2.5", "@chainsafe/ssz": "^1.4.0", "@lodestar/config": "^1.44.0", "@lodestar/params": "^1.44.0", "@lodestar/types": "^1.44.0", "@lodestar/utils": "^1.44.0", "eventsource": "^2.0.2", "qs": "^6.11.1" } }, "sha512-nz+tDnYdLB+phVnQtno9zKPjCSVgqRjreX/v5Om1o9h96VZx9/mcS9EiiDlwwbMlREcq0PiqzdIBq9/dOvowHA=="],
 
-    "@lodestar/config": ["@lodestar/config@1.31.0", "", { "dependencies": { "@chainsafe/ssz": "^1.2.1", "@lodestar/params": "^1.31.0", "@lodestar/types": "^1.31.0", "@lodestar/utils": "^1.31.0" } }, "sha512-DaFKeqYBu8yLW8IRUkxHalJHWLLJqswxttRhALnEUmEgLDiU1erVxwhjIe2UzTWHVqB8KdKTZHTVWP0A+QJq+Q=="],
+    "@lodestar/config": ["@lodestar/config@1.44.0", "", { "dependencies": { "@chainsafe/as-sha256": "^1.2.0", "@chainsafe/ssz": "^1.4.0", "@lodestar/params": "^1.44.0", "@lodestar/types": "^1.44.0", "@lodestar/utils": "^1.44.0" } }, "sha512-tFodHVWqXMPerI2MP4sJrdRcZbyok5gyWa0iKo9GZac9SejuTv2osxflG1l9bPPAuUckVmiQPr3GYMVm+8y3lg=="],
 
-    "@lodestar/params": ["@lodestar/params@1.31.0", "", {}, "sha512-9ZsAQSbHSqu0je5IKhumCi0LI0YOO7ekjuMuZFov2QgySb/ofDvnuqjD4UO6/8u1yN6TS87r6h3F9IBzbT316g=="],
+    "@lodestar/params": ["@lodestar/params@1.44.0", "", {}, "sha512-Hhb/YNLGSGLLVvCpfmTPaJzKXBSL1Sd64XWkpfO8+jkZOcRQM6GvRpMgbkJIdUBu2yC0B9sT19/iWxPik84jow=="],
 
-    "@lodestar/types": ["@lodestar/types@1.31.0", "", { "dependencies": { "@chainsafe/ssz": "^1.2.1", "@lodestar/params": "^1.31.0", "ethereum-cryptography": "^2.0.0" } }, "sha512-rpsSRfiEXqRO6IjbnZqkYa0guBK7s/BkqJT3ClBWmcUg/VSGYCjT2I2dNhfGxPmddovP7xonYXpXK/x8xZGh1g=="],
+    "@lodestar/types": ["@lodestar/types@1.44.0", "", { "dependencies": { "@chainsafe/ssz": "^1.4.0", "@lodestar/params": "^1.44.0", "ethereum-cryptography": "^2.0.0" } }, "sha512-ZTa147pQOaoEntaLRF2sI6wWIirl8lw2XP1cOpu0+wuTfNucJMTA97JfbzMAi1gC83L+kHLjRH+TR1kB6XIU+Q=="],
 
-    "@lodestar/utils": ["@lodestar/utils@1.31.0", "", { "dependencies": { "@chainsafe/as-sha256": "^1.2.0", "any-signal": "^4.1.1", "bigint-buffer": "^1.1.5", "case": "^1.6.3", "js-yaml": "^4.1.0" } }, "sha512-eLVXJkzfl3Zeb9GRSQdPpAjrBRZEt6kKNfQF7Da8Hj4uo5bc6NFm0tTrpRnBhuFQKVbYAZU/uPkbNSR12U8mpA=="],
+    "@lodestar/utils": ["@lodestar/utils@1.44.0", "", { "dependencies": { "@chainsafe/as-sha256": "^1.2.0", "@vekexasia/bigint-buffer2": "^1.1.1", "any-signal": "^4.1.1", "case": "^1.6.3", "js-yaml": "^4.1.0" } }, "sha512-xYIxos7I0gXY59OxXx0ZUwCj4uNZZTody5FmqQCC7BpL4A8Y5RIe+jMiWo4+0miXPhop2kfkF3AlqIr37OBlcw=="],
 
     "@noble/curves": ["@noble/curves@1.4.2", "", { "dependencies": { "@noble/hashes": "1.4.0" } }, "sha512-TavHr8qycMChk8UwMld0ZDRvatedkzWfH8IiaeGCfymOP5i0hSCozz9vHOL0nkwk7HRMlFnAiKpS2jrUmSybcw=="],
 
@@ -55,13 +60,11 @@
 
     "@types/node": ["@types/node@22.15.29", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-LNdjOkUDlU1RZb8e1kOIUpN1qQUlzGkEtbVNo53vbrwDg5om6oduhm4SiUaPW5ASTXhAiP0jInWG8Qx9fVlOeQ=="],
 
+    "@vekexasia/bigint-buffer2": ["@vekexasia/bigint-buffer2@1.1.1", "", { "peerDependencies": { "@vekexasia/bigint-uint8array": "*" }, "optionalPeers": ["@vekexasia/bigint-uint8array"] }, "sha512-uL63NGANn85oKrsrvD0CzgmkuMlWQnGv/J7sz0QQ2CnRaF1nMF0fAoRFH9PFtGRr62ZCA14qkHZATyBZbKYlRQ=="],
+
     "any-signal": ["any-signal@4.1.1", "", {}, "sha512-iADenERppdC+A2YKbOXXB2WUeABLaM6qnpZ70kZbPZ1cZMMJ7eF+3CaYm+/PhBizgkzlvssC7QuHS30oOiQYWA=="],
 
     "argparse": ["argparse@2.0.1", "", {}, "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="],
-
-    "bigint-buffer": ["bigint-buffer@1.1.5", "", { "dependencies": { "bindings": "^1.3.0" } }, "sha512-trfYco6AoZ+rKhKnxA0hgX0HAbVP/s808/EuDSe2JDzUnCp/xAsli35Orvk67UrTEcwuxZqYZDmfA2RXJgxVvA=="],
-
-    "bindings": ["bindings@1.5.0", "", { "dependencies": { "file-uri-to-path": "1.0.0" } }, "sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ=="],
 
     "call-bind-apply-helpers": ["call-bind-apply-helpers@1.0.2", "", { "dependencies": { "es-errors": "^1.3.0", "function-bind": "^1.1.2" } }, "sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ=="],
 
@@ -86,8 +89,6 @@
     "ethereum-cryptography": ["ethereum-cryptography@2.2.1", "", { "dependencies": { "@noble/curves": "1.4.2", "@noble/hashes": "1.4.0", "@scure/bip32": "1.4.0", "@scure/bip39": "1.3.0" } }, "sha512-r/W8lkHSiTLxUxW8Rf3u4HGB0xQweG2RyETjywylKZSzLWoWAijRz8WCuOtJ6wah+avllXBqZuk29HCCvhEIRg=="],
 
     "eventsource": ["eventsource@2.0.2", "", {}, "sha512-IzUmBGPR3+oUG9dUeXynyNmf91/3zUSJg1lCktzKw47OXuhco54U3r9B7O4XX+Rb1Itm9OZ2b0RkTs10bICOxA=="],
-
-    "file-uri-to-path": ["file-uri-to-path@1.0.0", "", {}, "sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw=="],
 
     "function-bind": ["function-bind@1.1.2", "", {}, "sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA=="],
 
@@ -117,8 +118,34 @@
 
     "side-channel-weakmap": ["side-channel-weakmap@1.0.2", "", { "dependencies": { "call-bound": "^1.0.2", "es-errors": "^1.3.0", "get-intrinsic": "^1.2.5", "object-inspect": "^1.13.3", "side-channel-map": "^1.0.1" } }, "sha512-WPS/HvHQTYnHisLo9McqBHOJk2FkHO/tlpvldyrnem4aeQp4hai3gythswg6p01oSoTl58rcpiFAjF2br2Ak2A=="],
 
-    "typescript": ["typescript@5.8.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ=="],
-
     "undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
+
+    "@chainsafe/ssz/@chainsafe/as-sha256": ["@chainsafe/as-sha256@1.2.4", "", {}, "sha512-3GXDysZOKD6cTYbm48lEdXdUbS7cafjXQZfgHOspTByhoGR/JM3KBXyF3vE6bf63ImjNPyoEZwnQcpYPQ6k3bQ=="],
+
+    "@chainsafe/ssz/@chainsafe/persistent-merkle-tree": ["@chainsafe/persistent-merkle-tree@1.3.0", "", { "dependencies": { "@chainsafe/as-sha256": "", "@chainsafe/hashtree": "1.0.2", "@noble/hashes": "^1.3.0" } }, "sha512-xGe95xNkYayC5BYQpo7ft5oHwyf52YtqBip+GJqZ9XgKSzraw93qUMNeqKrOVJbZM5HEOys8xxkt0h7VD1a9cw=="],
+
+    "@lodestar/api/@chainsafe/persistent-merkle-tree": ["@chainsafe/persistent-merkle-tree@1.3.0", "", { "dependencies": { "@chainsafe/as-sha256": "", "@chainsafe/hashtree": "1.0.2", "@noble/hashes": "^1.3.0" } }, "sha512-xGe95xNkYayC5BYQpo7ft5oHwyf52YtqBip+GJqZ9XgKSzraw93qUMNeqKrOVJbZM5HEOys8xxkt0h7VD1a9cw=="],
+
+    "@lodestar/config/@chainsafe/as-sha256": ["@chainsafe/as-sha256@1.2.4", "", {}, "sha512-3GXDysZOKD6cTYbm48lEdXdUbS7cafjXQZfgHOspTByhoGR/JM3KBXyF3vE6bf63ImjNPyoEZwnQcpYPQ6k3bQ=="],
+
+    "@lodestar/utils/@chainsafe/as-sha256": ["@chainsafe/as-sha256@1.2.4", "", {}, "sha512-3GXDysZOKD6cTYbm48lEdXdUbS7cafjXQZfgHOspTByhoGR/JM3KBXyF3vE6bf63ImjNPyoEZwnQcpYPQ6k3bQ=="],
+
+    "@chainsafe/ssz/@chainsafe/persistent-merkle-tree/@chainsafe/hashtree": ["@chainsafe/hashtree@1.0.2", "", { "optionalDependencies": { "@chainsafe/hashtree-darwin-arm64": "1.0.2", "@chainsafe/hashtree-linux-arm64-gnu": "1.0.2", "@chainsafe/hashtree-linux-arm64-musl": "1.0.2", "@chainsafe/hashtree-linux-x64-gnu": "1.0.2", "@chainsafe/hashtree-linux-x64-musl": "1.0.2", "@chainsafe/hashtree-win32-x64-msvc": "1.0.2" } }, "sha512-OaWjsZ6S/GaT2RvaqdpsF5Mux8qQOE2KbitX2yHmQJZNUZkdh7C3N4PA5LsvewqX+z8Nkv8mr1uSe0LSrHGiQw=="],
+
+    "@lodestar/api/@chainsafe/persistent-merkle-tree/@chainsafe/as-sha256": ["@chainsafe/as-sha256@1.2.4", "", {}, "sha512-3GXDysZOKD6cTYbm48lEdXdUbS7cafjXQZfgHOspTByhoGR/JM3KBXyF3vE6bf63ImjNPyoEZwnQcpYPQ6k3bQ=="],
+
+    "@lodestar/api/@chainsafe/persistent-merkle-tree/@chainsafe/hashtree": ["@chainsafe/hashtree@1.0.2", "", { "optionalDependencies": { "@chainsafe/hashtree-darwin-arm64": "1.0.2", "@chainsafe/hashtree-linux-arm64-gnu": "1.0.2", "@chainsafe/hashtree-linux-arm64-musl": "1.0.2", "@chainsafe/hashtree-linux-x64-gnu": "1.0.2", "@chainsafe/hashtree-linux-x64-musl": "1.0.2", "@chainsafe/hashtree-win32-x64-msvc": "1.0.2" } }, "sha512-OaWjsZ6S/GaT2RvaqdpsF5Mux8qQOE2KbitX2yHmQJZNUZkdh7C3N4PA5LsvewqX+z8Nkv8mr1uSe0LSrHGiQw=="],
+
+    "@chainsafe/ssz/@chainsafe/persistent-merkle-tree/@chainsafe/hashtree/@chainsafe/hashtree-darwin-arm64": ["@chainsafe/hashtree-darwin-arm64@1.0.2", "", { "os": "darwin", "cpu": "arm64" }, "sha512-yIIwn9SUR5ZTl2vN1QqRtDFL/w2xYW4o68A1k8UexMbieGAnE7Ab7NvtCZRHRe8x0eONO46F/bWn5bxxyYlFXw=="],
+
+    "@chainsafe/ssz/@chainsafe/persistent-merkle-tree/@chainsafe/hashtree/@chainsafe/hashtree-linux-arm64-gnu": ["@chainsafe/hashtree-linux-arm64-gnu@1.0.2", "", { "os": "linux", "cpu": "arm64" }, "sha512-MDz1xBRTRHw2eezGqx1Ff8NoeUUQP3bhbeeVG8ZZTkFYqvRc8O65OQOTtgO+fFGvqnDjVBSRHmiTXU5eNeH/mQ=="],
+
+    "@chainsafe/ssz/@chainsafe/persistent-merkle-tree/@chainsafe/hashtree/@chainsafe/hashtree-linux-x64-gnu": ["@chainsafe/hashtree-linux-x64-gnu@1.0.2", "", { "os": "linux", "cpu": "x64" }, "sha512-bFy9ffFG77SivmeOjOlZmOCrxzQ/WqUESy0I+dW6IX7wquTXHldJKWvohs9+FEn3TSXgeigFmEATz5tfxBfIZw=="],
+
+    "@lodestar/api/@chainsafe/persistent-merkle-tree/@chainsafe/hashtree/@chainsafe/hashtree-darwin-arm64": ["@chainsafe/hashtree-darwin-arm64@1.0.2", "", { "os": "darwin", "cpu": "arm64" }, "sha512-yIIwn9SUR5ZTl2vN1QqRtDFL/w2xYW4o68A1k8UexMbieGAnE7Ab7NvtCZRHRe8x0eONO46F/bWn5bxxyYlFXw=="],
+
+    "@lodestar/api/@chainsafe/persistent-merkle-tree/@chainsafe/hashtree/@chainsafe/hashtree-linux-arm64-gnu": ["@chainsafe/hashtree-linux-arm64-gnu@1.0.2", "", { "os": "linux", "cpu": "arm64" }, "sha512-MDz1xBRTRHw2eezGqx1Ff8NoeUUQP3bhbeeVG8ZZTkFYqvRc8O65OQOTtgO+fFGvqnDjVBSRHmiTXU5eNeH/mQ=="],
+
+    "@lodestar/api/@chainsafe/persistent-merkle-tree/@chainsafe/hashtree/@chainsafe/hashtree-linux-x64-gnu": ["@chainsafe/hashtree-linux-x64-gnu@1.0.2", "", { "os": "linux", "cpu": "x64" }, "sha512-bFy9ffFG77SivmeOjOlZmOCrxzQ/WqUESy0I+dW6IX7wquTXHldJKWvohs9+FEn3TSXgeigFmEATz5tfxBfIZw=="],
   }
 }

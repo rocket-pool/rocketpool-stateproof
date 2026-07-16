@@ -6,6 +6,7 @@ import { generateWithdrawableEpochProof } from './commands/withdrawable_epoch'
 import { generateWithdrawalProof } from './commands/withdrawal'
 import { generateValidatorPubkeyProof } from './commands/validator_pubkey'
 import { generateHistoricalWithdrawalProof } from './commands/historical_withdrawal'
+import { generateParticipationProof } from './commands/participation'
 
 dotenv.config()
 
@@ -51,6 +52,13 @@ program.command('withdrawable_epoch').
   argument('<validator_index>', 'validator index to generate proof for').
   option('--slot <number>', 'slot number to generate proof for ', 'head').
   action(generateWithdrawableEpochProof)
+
+program.command('participation').
+  description('generate a state proof for the previous_epoch_participation of a validator').
+  argument('<proof_slot>', 'slot to produce the proof for').
+  argument('<participation_slot>', 'slot containing the previous_epoch_participation (must be within 8192 slots of the proof slot)').
+  argument('<validator_index>', 'validator index to generate proof for').
+  action(generateParticipationProof)
 
 program.command('withdrawal').
   description('generate a state proof for a withdrawal').

@@ -41,7 +41,9 @@ Options:
 Commands:
   validator_pubkey [options] <validator_index>                              generate a state proof for a validator pubkey/withdrawal_credentials
   validator [options] <validator_index>                                     generate a state proof for a validator
+  slot [options]                                                            generate a state proof for the slot number
   withdrawable_epoch [options] <validator_index>                            generate a state proof for the withdrawable_epoch of a validator
+  participation <proof_slot> <participation_slot> <validator_index>                 generate a state proof for the previous_epoch_participation of a validator
   withdrawal <proof_slot> <withdrawal_slot> <withdrawal_number>             generate a state proof for a withdrawal
   historical_withdrawal <proof_slot> <withdrawal_slot> <withdrawal_number>  generate a state proof for a withdrawal (using historical block root)
   help [command]   
