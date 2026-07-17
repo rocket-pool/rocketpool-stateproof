@@ -4,15 +4,12 @@ import { constructBlockHeaderWithStateRoot, getBlock, getState } from '../common
 import { ssz } from '@lodestar/types'
 import { createProof, ProofType, SingleProof } from '@chainsafe/persistent-merkle-tree'
 import { concatGindices } from '@chainsafe/persistent-merkle-tree'
+import { getHistoricalProofContext, isHistoricalNetwork } from '../common/history'
 
 interface ValidatorProofOpts {
   slot: string
   network: string
 }
-
-const SLOTS_PER_HISTORICAL_ROOT = 8192;
-const MAINNET_HISTORY_START = 758; // CAPELLA_FORK_EPOCH * 32 / SLOTS_PER_HISTORICAL_ROOT
-const HOODI_HISTORY_START = 0;
 
 export async function generateHistoricalWithdrawalProof(proofSlotStr: string, withdrawalSlotStr: string, withdrawalNumberStr: string, opts: ValidatorProofOpts, program: Command) {
   const allOpts = program.optsWithGlobals();
@@ -21,20 +18,19 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
   const withdrawalNumber = parseInt(withdrawalNumberStr)
   const network = opts.network
 
-  if (network !== 'mainnet' && network !== 'hoodi') {
-    console.error(`Unknown network "${network}"`)
-    process.exit(1)
+  if (!isHistoricalNetwork(network)) {
+    program.error(`Unknown network "${network}"`)
   }
 
-  const slotIndex = withdrawalSlot % SLOTS_PER_HISTORICAL_ROOT;
-  const historyStart = network === 'mainnet' ? MAINNET_HISTORY_START : HOODI_HISTORY_START;
-  const historicalEntry = Math.floor(withdrawalSlot / SLOTS_PER_HISTORICAL_ROOT) - historyStart
+  const { slotIndex, historicalEntry, historicalSlot } = getHistoricalProofContext(withdrawalSlot, network)
+  if (historicalEntry < 0) {
+    program.error(`Withdrawal slot ${withdrawalSlot} predates historical summaries on ${network}`)
+  }
 
   // Fetch the block at the withdrawal slot
   const withdrawalBlock = await getBlock(allOpts.rpc, withdrawalSlot)
 
-  // Calculate and fetch the state of a slot that contains a complete historical_summaries accumulator
-  const historicalSlot = Math.floor(Math.ceil(withdrawalSlot / SLOTS_PER_HISTORICAL_ROOT) * SLOTS_PER_HISTORICAL_ROOT);
+  // Fetch the first boundary state whose completed vectors contain the withdrawal slot.
   const historicalState = await getState(allOpts.rpc, historicalSlot)
 
   // Fetch the beacon state at the proof slot
@@ -115,7 +111,7 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
     witnesses.push(proof.witnesses.map(witness => Buffer.from(witness).toString('hex')));
   }
 
-  const blockRootsIndex = withdrawalSlot % SLOTS_PER_HISTORICAL_ROOT
+  const blockRootsIndex = slotIndex
   const blockRootFromProofSlot = historicalState.blockRoots[blockRootsIndex]
 
   // Generate partial proof from BeaconBlock -> body -> execution_payload -> withdrawals[withdrawalNumber]
@@ -151,7 +147,7 @@ export async function generateHistoricalWithdrawalProof(proofSlotStr: string, wi
   console.log(chalk.green('Proof generation complete'))
   console.log()
   console.log(`Withdrawal Slot: ${withdrawalSlot}`)
-  console.log(`Historical Blook Roots Slot: ${historicalSlot}`);
+  console.log(`Historical Block Roots Slot: ${historicalSlot}`);
   console.log(`Withdrawal Number: ${withdrawalNumber}`)
   console.log(`Proof Slot: ${proofSlot}`)
   console.log()

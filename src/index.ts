@@ -7,6 +7,7 @@ import { generateWithdrawalProof } from './commands/withdrawal'
 import { generateValidatorPubkeyProof } from './commands/validator_pubkey'
 import { generateHistoricalWithdrawalProof } from './commands/historical_withdrawal'
 import { generateParticipationProof } from './commands/participation'
+import { generateHistoricalParticipationProof } from './commands/historical_participation'
 
 dotenv.config()
 
@@ -59,6 +60,14 @@ program.command('participation').
   argument('<participation_slot>', 'slot containing the previous_epoch_participation (must be within 8192 slots of the proof slot)').
   argument('<validator_index>', 'validator index to generate proof for').
   action(generateParticipationProof)
+
+program.command('historical_participation').
+  description('generate a state proof for previous_epoch_participation using historical_summaries').
+  argument('<proof_slot>', 'slot to produce the proof for').
+  argument('<participation_slot>', 'historical slot containing the previous_epoch_participation').
+  argument('<validator_index>', 'validator index to generate proof for').
+  option('--network <string>', '"mainnet" or "hoodi" (defaults to "mainnet")', 'mainnet').
+  action(generateHistoricalParticipationProof)
 
 program.command('withdrawal').
   description('generate a state proof for a withdrawal').
