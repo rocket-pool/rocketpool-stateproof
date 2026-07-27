@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@chainsafe/persistent-merkle-tree": "^1.2.0",
-    "@chainsafe/ssz": "^1.4.0",
+    "@chainsafe/ssz": "1.6.2",
     "@lodestar/api": "^1.44.0",
     "@lodestar/config": "^1.44.0",
     "@lodestar/params": "^1.44.0",
