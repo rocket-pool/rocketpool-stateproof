@@ -1,6 +1,6 @@
 import { Command } from 'commander'
 import chalk from 'chalk'
-import { constructBlockHeaderWithStateRoot, getBlock, getState } from '../common/beaconchain'
+import { constructBlockHeaderWithStateRoot, getStateWithFork } from '../common/beaconchain'
 import { ssz } from '@lodestar/types'
 import { createProof, ProofType, SingleProof } from '@chainsafe/persistent-merkle-tree'
 import { concatGindices } from '@chainsafe/persistent-merkle-tree'
@@ -19,11 +19,23 @@ export async function generateSlotProof(opts: ValidatorProofOpts, program: Comma
   }
 
   // Fetch the state
-  const state = await getState(allOpts.rpc, slot)
-  console.log(`Generating proof for slot ${state.slot}`)
+  const { fork, state } = await getStateWithFork(allOpts.rpc, slot)
+  console.log(`Generating proof for slot ${state.slot} (${fork})`)
 
   // Construct the SSZ tree
-  const stateView = ssz.electra.BeaconState.toView(state);
+  const forkTypes = (() => {
+    switch (fork) {
+      case 'gloas':
+        return ssz.gloas
+      case 'fulu':
+        return ssz.fulu
+      case 'electra':
+        return ssz.electra
+      default:
+        throw new Error(`Unsupported fork: ${fork}`)
+    }
+  })()
+  const stateView = forkTypes.BeaconState.toView(state as any);
 
   // Compute the state root for this slot
   console.log(chalk.blue("Computing state root..."))
@@ -32,7 +44,7 @@ export async function generateSlotProof(opts: ValidatorProofOpts, program: Comma
 
   // Construct the block header as it would be in the "parent_root" of the next block from the latest block header and the computed state root
   const blockHeader = constructBlockHeaderWithStateRoot(state.latestBlockHeader, stateRoot);
-  const blockHeaderView = ssz.electra.BeaconBlockHeader.toView(blockHeader);
+  const blockHeaderView = forkTypes.BeaconBlockHeader.toView(blockHeader);
 
   // Compute the block root
   console.log(chalk.blue("Computing block root..."))
@@ -45,7 +57,7 @@ export async function generateSlotProof(opts: ValidatorProofOpts, program: Comma
 
   // Generate partial proof from BlockHeader -> state_root
   {
-    const { gindex } = ssz.electra.BeaconBlockHeader.getPathInfo(['state_root']);
+    const { gindex } = forkTypes.BeaconBlockHeader.getPathInfo(['state_root']);
     gindices.push(gindex);
     const proof = createProof(blockHeaderView.node, {
       type: ProofType.single,
@@ -56,7 +68,7 @@ export async function generateSlotProof(opts: ValidatorProofOpts, program: Comma
 
   // Generate partial proof from BeaconState -> slot
   {
-    let { gindex } = ssz.electra.BeaconState.getPathInfo(['slot']);
+    let { gindex } = forkTypes.BeaconState.getPathInfo(['slot']);
     gindices.push(gindex);
     const proof = createProof(stateView.node, {
       type: ProofType.single,

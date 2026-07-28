@@ -8,12 +8,12 @@
     "build": "bun build ./src/index.ts --compile --outfile rp-stateproof"
   },
   "dependencies": {
-    "@chainsafe/persistent-merkle-tree": "^1.2.0",
+    "@chainsafe/persistent-merkle-tree": "^1.3.0",
     "@chainsafe/ssz": "1.6.2",
-    "@lodestar/api": "^1.44.0",
-    "@lodestar/config": "^1.44.0",
-    "@lodestar/params": "^1.44.0",
-    "@lodestar/types": "^1.44.0",
+    "@lodestar/api": "1.45.0-dev.6568180f96",
+    "@lodestar/config": "1.45.0-dev.6568180f96",
+    "@lodestar/params": "1.45.0-dev.6568180f96",
+    "@lodestar/types": "1.45.0-dev.6568180f96",
     "@types/node": "^22.15.29",
     "chalk": "^5.4.1",
     "commander": "^14.0.0",

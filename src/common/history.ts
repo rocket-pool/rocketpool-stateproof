@@ -18,10 +18,14 @@ export function isHistoricalNetwork(network: string): network is HistoricalNetwo
 }
 
 export function getHistoricalProofContext(slot: number, network: HistoricalNetwork): HistoricalProofContext {
+  return getHistoricalProofContextFromStart(slot, HISTORY_START[network])
+}
+
+export function getHistoricalProofContextFromStart(slot: number, historicalStart: number): HistoricalProofContext {
   const historicalPeriod = Math.floor(slot / SLOTS_PER_HISTORICAL_ROOT)
 
   return {
-    historicalEntry: historicalPeriod - HISTORY_START[network],
+    historicalEntry: historicalPeriod - historicalStart,
     // The vectors summarized at a boundary contain roots through the preceding slot, so a slot exactly
     // on a boundary belongs to the summary created at the following boundary.
     historicalSlot: (historicalPeriod + 1) * SLOTS_PER_HISTORICAL_ROOT,

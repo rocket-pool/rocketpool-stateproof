@@ -10,6 +10,11 @@ export interface ForkedBeaconState {
   state: BeaconState
 }
 
+export interface ForkedBeaconBlock {
+  fork: ForkName
+  block: SignedBeaconBlock
+}
+
 export async function getStateWithFork (endpoint: string, stateId: number | 'head'): Promise<ForkedBeaconState> {
   // Check cache first
   if (typeof stateId === 'number') {
@@ -38,17 +43,17 @@ export async function getStateWithFork (endpoint: string, stateId: number | 'hea
   return { fork, state }
 }
 
-export async function getState (endpoint: string, stateId: number | 'head'): Promise<BeaconState<ForkName.fulu>> {
-  return (await getStateWithFork(endpoint, stateId)).state as BeaconState<ForkName.fulu>
+export async function getState (endpoint: string, stateId: number | 'head'): Promise<BeaconState<ForkName.gloas>> {
+  return (await getStateWithFork(endpoint, stateId)).state as BeaconState<ForkName.gloas>
 }
 
-export async function getBlock (endpoint: string, blockId: string | number): Promise<SignedBeaconBlock<ForkName.fulu>> {
+export async function getBlockWithFork (endpoint: string, blockId: string | number): Promise<ForkedBeaconBlock> {
   if (typeof blockId === 'number') {
     try {
       const cachePath = `${__dirname}/../../cache/block/${blockId}.ssz`
       if ((await fs.stat(cachePath)).isFile()) {
         const data = await fs.readFile(cachePath)
-        return ssz.fulu.SignedBeaconBlock.deserialize(data)
+        return deserializeBeaconBlock(data)
       }
     } catch(e) {}
   }
@@ -57,15 +62,19 @@ export async function getBlock (endpoint: string, blockId: string | number): Pro
   const api = getClient({ baseUrl: endpoint }, { config })
   const res = await api.beacon.getBlockV2({ blockId: blockId })
 
-  const value = res.value() as SignedBeaconBlock<ForkName.fulu>
+  const block = res.value()
+  const fork = res.meta().version
 
   // Write as SSZ format to cache as the SSZ format is more compact than JSON
-  const treeState = ssz.fulu.SignedBeaconBlock.toView(value)
-  const data = treeState.serialize()
-  const cachePath = `${__dirname}/../../cache/block/${value.message.slot}.ssz`
+  const data = sszTypesFor(fork).SignedBeaconBlock.serialize(block as never)
+  const cachePath = `${__dirname}/../../cache/block/${block.message.slot}.ssz`
   await fs.writeFile(cachePath, data)
 
-  return value
+  return { fork, block }
+}
+
+export async function getBlock (endpoint: string, blockId: string | number): Promise<SignedBeaconBlock<ForkName.gloas>> {
+  return (await getBlockWithFork(endpoint, blockId)).block as SignedBeaconBlock<ForkName.gloas>
 }
 
 export function constructBlockHeaderWithStateRoot (latestBlockHeader: BeaconBlockHeader, stateRoot: Uint8Array): BeaconBlockHeader {
@@ -90,4 +99,16 @@ function deserializeBeaconState (data: Uint8Array): ForkedBeaconState {
   }
 
   throw new Error('Cached beacon state does not match any supported fork')
+}
+
+function deserializeBeaconBlock (data: Uint8Array): ForkedBeaconBlock {
+  for (const fork of [...forkAll].reverse()) {
+    try {
+      const block = sszTypesFor(fork).SignedBeaconBlock.deserialize(data)
+      return { fork, block }
+    }
+    catch(e) {}
+  }
+
+  throw new Error('Cached beacon block does not match any supported fork')
 }

@@ -46,6 +46,9 @@ Commands:
   participation <proof_slot> <participation_slot> <validator_index>                 generate a state proof for the previous_epoch_participation of a validator
   historical_participation <proof_slot> <participation_slot> <validator_index>      generate a state proof for previous_epoch_participation using historical_summaries
   withdrawal <proof_slot> <withdrawal_slot> <withdrawal_number>             generate a state proof for a withdrawal
-  historical_withdrawal <proof_slot> <withdrawal_slot> <withdrawal_number>  generate a state proof for a withdrawal (using historical block root)
+  historical_withdrawal [options] <proof_slot> <withdrawal_slot> <withdrawal_number>  generate a state proof for a withdrawal using historical_summaries
   help [command]   
 ```
+
+`historical_withdrawal` defaults to the mainnet historical-summary start period of `758`.
+Use `--historical-start 0` for testnets and devnets whose historical summaries begin at genesis.
